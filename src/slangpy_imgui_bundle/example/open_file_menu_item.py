@@ -5,7 +5,7 @@ from typing import Unpack
 from imgui_bundle import portable_file_dialogs as pfd
 from slangpy_imgui_bundle.render_targets.menu import SimpleMenuItem, SimpleMenuItemArgs
 from slangpy_imgui_bundle.render_targets.render_target import RenderArgs
-from slangpy_imgui_bundle.utils.file_dialog import async_file_dialog
+from slangpy_imgui_bundle.utils.file_dialog import async_open_file_dialog
 
 
 logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ class OpenFileMenuItem(SimpleMenuItem):
         super().__init__(**super_kwargs)
 
     async def file_dialog(self):
-        files = await async_file_dialog(
+        files = await async_open_file_dialog(
             title="Open File",
             default_path=str(Path.home()),
             filters=["All Files", "*.*"],
