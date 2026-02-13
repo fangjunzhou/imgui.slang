@@ -105,6 +105,9 @@ class App:
     def on_drop_files(self, file_paths: Sequence[str]) -> None:
         pass
 
+    def update(self) -> None:
+        pass
+
     async def run(self) -> None:
         while not self.window.should_close():
             current_time = time.time()
@@ -127,6 +130,8 @@ class App:
             imgui.render()
             # Render ImGui.
             self.adapter.render(imgui.get_draw_data())
+
+            self.update()
 
             # Yield to event loop.
             await asyncio.sleep(0)
