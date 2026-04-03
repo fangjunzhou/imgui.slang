@@ -28,6 +28,15 @@ class App:
     enable_debug_layer = False
     shader_paths = [imgui_slang.GUI_SHADER_PATH]
 
+    # Font config.
+    font_path = BehaviorSubject[Path | None](None)
+    font_size = BehaviorSubject[int](16)
+
+    # Font state.
+    _font_path: Path | None = None
+    _font_size = 16
+    _need_font_reload: bool = False
+
     # Render targets.
     _render_targets: List[RenderTarget] = []
     _dockspace: Dockspace | None = None
@@ -74,6 +83,9 @@ class App:
         self.window.on_gamepad_event = self.on_gamepad_event
         self.window.on_gamepad_state = self.on_gamepad_state
 
+        # Load font.
+        self._reload_font()
+
         # Create dockspace.
         self._dockspace = Dockspace(
             device=self.device,
@@ -87,11 +99,34 @@ class App:
         # Subscribe to framebuffer scale changes.
         self._fb_scale.subscribe(self.on_fb_scale_changed)
 
+        # Subscribe to font config changes.
+        self.font_path.subscribe(self.on_font_path_changed)
+        self.font_size.subscribe(self.on_font_size_changed)
+
+    def _reload_font(self) -> None:
+        if self._font_path is None:
+            return
+        self.io.fonts.clear()
+        self.io.fonts.add_font_from_file_ttf(
+            str(self._font_path), self._font_size * self._fb_scale.value
+        )
+        self.adapter.refresh_font_texture()
+        self.io.font_global_scale = 1.0 / self._fb_scale.value
+
+    def on_font_path_changed(self, font_path: Path | None) -> None:
+        self._font_path = font_path
+        self._need_font_reload = True
+
+    def on_font_size_changed(self, font_size: int) -> None:
+        self._font_size = font_size
+        self._need_font_reload = True
+
     def on_fb_scale_changed(self, fb_scale: int) -> None:
         self.adapter.fb_scale = fb_scale
         self.adapter.resize(
             self._curr_window_size.value.x, self._curr_window_size.value.y
         )
+        self._need_font_reload = True
 
     def on_resize(self, width: int, height: int) -> None:
         self.adapter.fb_scale = self._fb_scale.value
@@ -141,6 +176,11 @@ class App:
             self.adapter.render(imgui.get_draw_data())
 
             self.update()
+
+            # Handle font reload if needed.
+            if self._need_font_reload:
+                self._reload_font()
+                self._need_font_reload = False
 
             # Yield to event loop.
             await asyncio.sleep(0)

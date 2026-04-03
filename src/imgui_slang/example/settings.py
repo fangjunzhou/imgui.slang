@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Unpack
 from reactivex.subject import BehaviorSubject
 from imgui_bundle import imgui, imgui_ctx
@@ -11,6 +12,8 @@ MIN_FB_SCALE = 1
 
 class SettingsWindowArgs(WindowArgs):
     fb_scale: BehaviorSubject[int]
+    font_path: BehaviorSubject[Path | None]
+    font_size: BehaviorSubject[int]
 
 
 class SettingsWindow(Window):
@@ -19,6 +22,8 @@ class SettingsWindow(Window):
     def __init__(self, **kwargs: Unpack[SettingsWindowArgs]) -> None:
         super().__init__(**kwargs)
         self._fb_scale = kwargs["fb_scale"]
+        self._font_path = kwargs["font_path"]
+        self._font_size = kwargs["font_size"]
 
     def render_window(self, time: float, delta_time: float, open: bool | None) -> bool:
         with imgui_ctx.begin(
@@ -34,4 +39,20 @@ class SettingsWindow(Window):
                 self._fb_scale.on_next(
                     max(MIN_FB_SCALE, min(MAX_FB_SCALE, new_fb_scale))
                 )
-        return open == True
+            imgui.label_text(
+                "Font",
+                (
+                    str(self._font_path.value.resolve())
+                    if self._font_path.value
+                    else "Default"
+                ),
+            )
+            changed, new_font_size = imgui.input_int(
+                label="Font Size",
+                v=self._font_size.value,
+                step=1,
+                step_fast=5,
+            )
+            if changed:
+                self._font_size.on_next(max(8, min(32, new_font_size)))
+        return window.opened

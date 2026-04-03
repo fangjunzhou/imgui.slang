@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Unpack
 from imgui_bundle import imgui
 from reactivex.subject import BehaviorSubject
@@ -6,6 +7,8 @@ from imgui_slang.example.demo_windows import (
     ImGuiDemoWindow,
     ImPlot3DDemoWindow,
 )
+
+import imgui_slang
 from imgui_slang.example.settings import SettingsWindow
 from imgui_slang.example.file_menu_item import OpenFileMenuItem, SaveFileMenuItem
 from imgui_slang.render_targets.dockspace import Dockspace, DockspaceArgs
@@ -13,6 +16,9 @@ from imgui_slang.render_targets.menu import (
     Menu,
     MenuItem,
 )
+
+
+FONT_PATH = imgui_slang.ASSETS_PATH / "fonts" / "JetBrainsMonoNerdFontMono-Regular.ttf"
 
 
 class ExampleDockspaceArgs(DockspaceArgs):
@@ -87,6 +93,9 @@ class ExampleDockspace(Dockspace):
 
 
 class ExampleApp(App):
+    font_path = BehaviorSubject[Path | None](FONT_PATH)
+    font_size = BehaviorSubject[int](16)
+
     _imgui_demo_opened: BehaviorSubject[bool] = BehaviorSubject(True)
     _implot_demo_opened: BehaviorSubject[bool] = BehaviorSubject(False)
     _settings_opened: BehaviorSubject[bool] = BehaviorSubject(False)
@@ -113,6 +122,8 @@ class ExampleApp(App):
                 open=self._settings_opened,
                 on_close=lambda: self._settings_opened.on_next(False),
                 fb_scale=self._fb_scale,
+                font_path=self.font_path,
+                font_size=self.font_size,
             ),
         ]
 
