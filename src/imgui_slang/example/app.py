@@ -6,7 +6,7 @@ from imgui_slang.example.demo_windows import (
     ImGuiDemoWindow,
     ImPlot3DDemoWindow,
 )
-from imgui_slang.example.open_file_menu_item import OpenFileMenuItem
+from imgui_slang.example.file_menu_item import OpenFileMenuItem, SaveFileMenuItem
 from imgui_slang.render_targets.dockspace import Dockspace, DockspaceArgs
 from imgui_slang.render_targets.menu import (
     Menu,
@@ -31,7 +31,11 @@ class ExampleDockspace(Dockspace):
                     OpenFileMenuItem(
                         device=self._device,
                         adapter=self._adapter,
-                    )
+                    ),
+                    SaveFileMenuItem(
+                        device=self._device,
+                        adapter=self._adapter,
+                    ),
                 ],
             ),
             Menu(

@@ -5,7 +5,7 @@ from typing import Unpack
 from imgui_bundle import portable_file_dialogs as pfd
 from imgui_slang.render_targets.menu import SimpleMenuItem, SimpleMenuItemArgs
 from imgui_slang.render_targets.render_target import RenderArgs
-from imgui_slang.utils.file_dialog import async_open_file_dialog
+from imgui_slang.utils.file_dialog import async_open_file_dialog, async_save_file_dialog
 
 
 logger = logging.getLogger(__name__)
@@ -34,5 +34,32 @@ class OpenFileMenuItem(SimpleMenuItem):
 
         if files:
             logger.info(f"Selected files: {files}")
+        else:
+            logger.info("No file selected.")
+
+
+class SaveFileMenuItem(SimpleMenuItem):
+    def __init__(self, **kwargs: Unpack[RenderArgs]) -> None:
+        def on_clicked() -> None:
+            asyncio.create_task(self.file_dialog())
+
+        super_kwargs: SimpleMenuItemArgs = {
+            "device": kwargs.get("device"),
+            "adapter": kwargs.get("adapter"),
+            "name": "Save",
+            "on_clicked": on_clicked,
+        }
+        super().__init__(**super_kwargs)
+
+    async def file_dialog(self):
+        file = await async_save_file_dialog(
+            title="Save File",
+            default_path="untitled.txt",
+            filters=["All Files", "*.*"],
+            options=pfd.opt.none,
+        )
+
+        if file:
+            logger.info(f"Selected file: {file}")
         else:
             logger.info("No file selected.")
