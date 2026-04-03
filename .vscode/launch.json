@@ -15,7 +15,7 @@
             "name": "Python Debugger: Module",
             "type": "debugpy",
             "request": "launch",
-            "module": "slangpy_imgui_bundle.__main__",
+            "module": "imgui_slang.__main__",
             "console": "integratedTerminal"
         }
     ]

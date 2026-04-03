@@ -33,7 +33,7 @@ def save_file_process(
     default_path: str,
     filters: List[str],
     options: portable_file_dialogs.opt,
-) -> List[str]:
+) -> str:
     """Runner function for save file dialog in a separate process.
 
     :param title: The title of the file dialog window.
@@ -83,7 +83,7 @@ async def async_save_file_dialog(
     default_path: str,
     filters: List[str],
     options: portable_file_dialogs.opt,
-) -> List[str]:
+) -> str:
     """Asynchronously open a save file dialog using multiprocessing.
 
     This function runs the blocking file dialog in a separate process to avoid
