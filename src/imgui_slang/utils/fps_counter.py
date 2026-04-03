@@ -1,3 +1,7 @@
+"""
+A FPS counter implementation.
+"""
+
 from typing import List, Unpack
 from imgui_bundle import imgui
 

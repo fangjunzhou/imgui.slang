@@ -1,3 +1,7 @@
+"""
+Main menu and menu items.
+"""
+
 from typing import Callable, Unpack
 
 from imgui_bundle import imgui
