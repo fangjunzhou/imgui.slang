@@ -5,7 +5,7 @@ A module defining a basic window render target for slangpy imgui applications.
 from typing import Callable, Tuple, Unpack, NotRequired
 from imgui_bundle import imgui
 from reactivex import Observable
-from slangpy_imgui_bundle.render_targets.render_target import (
+from imgui_slang.render_targets.render_target import (
     RenderArgs,
     RenderTarget,
 )

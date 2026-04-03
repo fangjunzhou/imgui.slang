@@ -3,9 +3,9 @@ import logging
 from pathlib import Path
 from typing import Unpack
 from imgui_bundle import portable_file_dialogs as pfd
-from slangpy_imgui_bundle.render_targets.menu import SimpleMenuItem, SimpleMenuItemArgs
-from slangpy_imgui_bundle.render_targets.render_target import RenderArgs
-from slangpy_imgui_bundle.utils.file_dialog import async_open_file_dialog
+from imgui_slang.render_targets.menu import SimpleMenuItem, SimpleMenuItemArgs
+from imgui_slang.render_targets.render_target import RenderArgs
+from imgui_slang.utils.file_dialog import async_open_file_dialog
 
 
 logger = logging.getLogger(__name__)

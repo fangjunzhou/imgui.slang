@@ -11,10 +11,10 @@ import time
 import asyncio
 from reactivex.subject import BehaviorSubject
 
-import slangpy_imgui_bundle
-from slangpy_imgui_bundle.render_targets.dockspace import Dockspace
-from slangpy_imgui_bundle.imgui_adapter import ImguiAdapter
-from slangpy_imgui_bundle.render_targets.render_target import RenderTarget
+import imgui_slang
+from imgui_slang.render_targets.dockspace import Dockspace
+from imgui_slang.imgui_adapter import ImguiAdapter
+from imgui_slang.render_targets.render_target import RenderTarget
 
 
 class App:
@@ -27,7 +27,7 @@ class App:
     # SGL config.
     device_type = spy.DeviceType.automatic
     enable_debug_layer = False
-    shader_paths = [slangpy_imgui_bundle.GUI_SHADER_PATH]
+    shader_paths = [imgui_slang.GUI_SHADER_PATH]
 
     # Render targets.
     _render_targets: List[RenderTarget] = []

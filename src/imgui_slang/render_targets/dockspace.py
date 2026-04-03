@@ -8,7 +8,7 @@ from reactivex import Observable
 import reactivex.operators as ops
 from pyglm import glm
 
-from slangpy_imgui_bundle.render_targets.render_target import (
+from imgui_slang.render_targets.render_target import (
     RenderArgs,
     RenderTarget,
 )

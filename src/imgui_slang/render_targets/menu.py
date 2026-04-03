@@ -2,7 +2,7 @@ from typing import Callable, Unpack
 
 from imgui_bundle import imgui
 from reactivex import Observable
-from slangpy_imgui_bundle.render_targets.render_target import (
+from imgui_slang.render_targets.render_target import (
     RenderArgs,
     RenderTarget,
 )

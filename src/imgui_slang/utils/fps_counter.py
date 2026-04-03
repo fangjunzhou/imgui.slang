@@ -1,7 +1,7 @@
 from typing import List, Unpack
 from imgui_bundle import imgui
 
-from slangpy_imgui_bundle.render_targets.render_target import RenderArgs, RenderTarget
+from imgui_slang.render_targets.render_target import RenderArgs, RenderTarget
 
 
 class FPSCounter(RenderTarget):

@@ -1,5 +1,5 @@
 {
-  description = "A slangpy renderer for ImGui Bundle.";
+  description = "A slangpy render backend for ImGui Bundle";
 
   inputs =
     {

@@ -1,7 +1,7 @@
 [project]
-name = "slangpy-imgui-bundle"
+name = "imgui-slang"
 version = "0.1.0"
-description = "A slangpy renderer for ImGui Bundle."
+description = "A slangpy render backend for ImGui Bundle"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

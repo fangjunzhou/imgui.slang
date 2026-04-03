@@ -1,14 +1,14 @@
 from typing import Unpack
 from imgui_bundle import imgui
 from reactivex.subject import BehaviorSubject
-from slangpy_imgui_bundle.app import App
-from slangpy_imgui_bundle.example.demo_windows import (
+from imgui_slang.app import App
+from imgui_slang.example.demo_windows import (
     ImGuiDemoWindow,
     ImPlot3DDemoWindow,
 )
-from slangpy_imgui_bundle.example.open_file_menu_item import OpenFileMenuItem
-from slangpy_imgui_bundle.render_targets.dockspace import Dockspace, DockspaceArgs
-from slangpy_imgui_bundle.render_targets.menu import (
+from imgui_slang.example.open_file_menu_item import OpenFileMenuItem
+from imgui_slang.render_targets.dockspace import Dockspace, DockspaceArgs
+from imgui_slang.render_targets.menu import (
     Menu,
     MenuItem,
 )

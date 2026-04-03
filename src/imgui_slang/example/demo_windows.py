@@ -1,5 +1,5 @@
 from imgui_bundle import imgui, implot3d
-from slangpy_imgui_bundle.render_targets.window import Window
+from imgui_slang.render_targets.window import Window
 
 
 class ImGuiDemoWindow(Window):

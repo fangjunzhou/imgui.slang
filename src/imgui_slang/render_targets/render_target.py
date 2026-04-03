@@ -4,7 +4,7 @@ A slangpy imgui render target that will be rendered every frame.
 
 from typing import NotRequired, TypedDict, Unpack
 import slangpy as spy
-from slangpy_imgui_bundle.imgui_adapter import ImguiAdapter
+from imgui_slang.imgui_adapter import ImguiAdapter
 
 
 class RenderArgs(TypedDict):
