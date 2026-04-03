@@ -6,6 +6,7 @@ from imgui_slang.example.demo_windows import (
     ImGuiDemoWindow,
     ImPlot3DDemoWindow,
 )
+from imgui_slang.example.settings import SettingsWindow
 from imgui_slang.example.file_menu_item import OpenFileMenuItem, SaveFileMenuItem
 from imgui_slang.render_targets.dockspace import Dockspace, DockspaceArgs
 from imgui_slang.render_targets.menu import (
@@ -17,6 +18,7 @@ from imgui_slang.render_targets.menu import (
 class ExampleDockspaceArgs(DockspaceArgs):
     imgui_demo_opened: BehaviorSubject[bool]
     implot_demo_opened: BehaviorSubject[bool]
+    settings_opened: BehaviorSubject[bool]
 
 
 class ExampleDockspace(Dockspace):
@@ -63,6 +65,15 @@ class ExampleDockspace(Dockspace):
                     ),
                 ],
             ),
+            MenuItem(
+                device=self._device,
+                adapter=self._adapter,
+                name="Settings",
+                open=kwargs["settings_opened"],
+                on_open_changed=lambda opened: kwargs["settings_opened"].on_next(
+                    opened
+                ),
+            ),
         ]
 
     def build(self, dockspace_id: int) -> None:
@@ -78,6 +89,7 @@ class ExampleDockspace(Dockspace):
 class ExampleApp(App):
     _imgui_demo_opened: BehaviorSubject[bool] = BehaviorSubject(True)
     _implot_demo_opened: BehaviorSubject[bool] = BehaviorSubject(False)
+    _settings_opened: BehaviorSubject[bool] = BehaviorSubject(False)
 
     def __init__(self) -> None:
         super().__init__([])
@@ -95,6 +107,13 @@ class ExampleApp(App):
                 open=self._implot_demo_opened,
                 on_close=lambda: self._implot_demo_opened.on_next(False),
             ),
+            SettingsWindow(
+                device=self.device,
+                adapter=self.adapter,
+                open=self._settings_opened,
+                on_close=lambda: self._settings_opened.on_next(False),
+                fb_scale=self._fb_scale,
+            ),
         ]
 
         self._dockspace = ExampleDockspace(
@@ -103,4 +122,5 @@ class ExampleApp(App):
             window_size=self._curr_window_size,
             imgui_demo_opened=self._imgui_demo_opened,
             implot_demo_opened=self._implot_demo_opened,
+            settings_opened=self._settings_opened,
         )

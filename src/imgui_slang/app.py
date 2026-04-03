@@ -22,7 +22,6 @@ class App:
     window_size = glm.ivec2(960, 540)
     window_title = "SlangPy Application"
     window_resizable = True
-    fb_scale = 1.0
 
     # SGL config.
     device_type = spy.DeviceType.automatic
@@ -39,6 +38,7 @@ class App:
     _curr_window_size: BehaviorSubject[glm.ivec2] = BehaviorSubject(
         glm.ivec2(window_size)
     )
+    _fb_scale: BehaviorSubject[int] = BehaviorSubject(1)
 
     def __init__(self, user_shader_paths: List[Path] = []) -> None:
         self.window = spy.Window(
@@ -64,7 +64,7 @@ class App:
         self.io.set_log_filename("")
         # Enable docking.
         self.io.config_flags |= imgui.ConfigFlags_.docking_enable.value
-        self.adapter = ImguiAdapter(self.window, self.device, self.fb_scale)
+        self.adapter = ImguiAdapter(self.window, self.device, self._fb_scale.value)
 
         # Setup callbacks.
         self.window.on_resize = self.on_resize
@@ -84,8 +84,17 @@ class App:
         self._start_time = time.time()
         self._last_frame_time = self._start_time
 
+        # Subscribe to framebuffer scale changes.
+        self._fb_scale.subscribe(self.on_fb_scale_changed)
+
+    def on_fb_scale_changed(self, fb_scale: int) -> None:
+        self.adapter.fb_scale = fb_scale
+        self.adapter.resize(
+            self._curr_window_size.value.x, self._curr_window_size.value.y
+        )
+
     def on_resize(self, width: int, height: int) -> None:
-        self.adapter.fb_scale = self.fb_scale
+        self.adapter.fb_scale = self._fb_scale.value
         self.adapter.resize(width, height)
         self._curr_window_size.on_next(glm.ivec2(width, height))
 
