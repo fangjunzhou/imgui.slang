@@ -83,6 +83,8 @@ class App:
         self.window.on_gamepad_event = self.on_gamepad_event
         self.window.on_gamepad_state = self.on_gamepad_state
 
+        self._curr_window_size.on_next(glm.ivec2(self.window.width, self.window.height))
+
         # Load font.
         self._reload_font()
 
