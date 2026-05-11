@@ -48,6 +48,24 @@ def save_file_process(
     return sf.result()
 
 
+def open_folder_process(
+    title: str,
+    default_path: str,
+    options: portable_file_dialogs.opt,
+) -> str:
+    """Runner function for folder dialog in a separate process.
+
+    :param title: The title of the folder dialog window.
+    :param default_path: The default path to open the dialog in.
+    :param options: portable_file_dialogs options.
+    :return:
+    """
+    of = portable_file_dialogs.select_folder(
+        title=title, default_path=default_path, options=options
+    )
+    return of.result()
+
+
 async def async_open_file_dialog(
     title: str,
     default_path: str,
@@ -73,6 +91,33 @@ async def async_open_file_dialog(
             title,
             default_path,
             filters,
+            options,
+        )
+    return result
+
+
+async def async_open_folder_dialog(
+    title: str,
+    default_path: str,
+    options: portable_file_dialogs.opt,
+) -> str:
+    """Asynchronously open a folder dialog using multiprocessing.
+
+    This function runs the blocking folder dialog in a separate process to avoid
+    blocking the main event loop.
+
+    :param title: The title of the folder dialog window.
+    :param default_path: The default path to open the dialog in.
+    :param options: portable_file_dialogs options.
+    :return:
+    """
+    loop = asyncio.get_event_loop()
+    with ProcessPoolExecutor() as executor:
+        result = await loop.run_in_executor(
+            executor,
+            open_folder_process,
+            title,
+            default_path,
             options,
         )
     return result
